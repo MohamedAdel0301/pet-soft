@@ -18,6 +18,10 @@ const config = {
       },
     },
     extend: {
+      backgroundImage: {
+        linearMint:
+          "radial-gradient(circle, rgba(44,150,118,1) 0%, rgba(44,112,91,1) 100%)",
+      },
       colors: {
         offWhite: "#e5e8ec",
         green1: "#9DC08B",

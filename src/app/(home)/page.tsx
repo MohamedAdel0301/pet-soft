@@ -1,9 +1,11 @@
 import Logo from "@/components/home/Logo";
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-10 lg:flex-row">
+    <main className="bg-linearMint flex min-h-screen flex-col items-center justify-center gap-10 lg:flex-row">
       <Image
         src="https://bytegrad.com/course-assets/react-nextjs/petsoft-preview.png"
         alt="PetSoft's preview"
@@ -21,6 +23,14 @@ export default function Home() {
           Use PetSoft to easily track pets under your care. Get lifetime access
           for $100
         </p>
+        <div className="mt-10 space-x-4">
+          <Button asChild>
+            <Link href={"/signup"}>Get started</Link>
+          </Button>
+          <Button variant={"secondary"} asChild>
+            <Link href={"/login"}>Log in</Link>
+          </Button>
+        </div>
       </section>
     </main>
   );
