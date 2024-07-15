@@ -1,4 +1,4 @@
-import { PetContext } from "@/contexts/petContextProvider";
+import { PetContext } from "@/contexts/PetContextProvider";
 import { useContext } from "react";
 
 export function usePetContext() {

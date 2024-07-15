@@ -2,7 +2,8 @@ import AppFooter from "@/components/AppFooter";
 import AppHeader from "@/components/AppHeader";
 import BackgroundPattern from "@/components/misc/BackgroundPattern";
 import { Row } from "@/components/misc/Row";
-import PetContextProvider from "@/contexts/petContextProvider";
+import PetContextProvider from "@/contexts/PetContextProvider";
+import PetSearchContextProvider from "@/contexts/PetSearchContextProvider";
 import { Pet } from "@/types/pet-types";
 import React from "react";
 
@@ -21,7 +22,9 @@ const AppLayout = async ({ children }: { children: React.ReactNode }) => {
 
       <Row className="flex min-h-screen flex-col">
         <AppHeader />
-        <PetContextProvider pets={pets}>{children}</PetContextProvider>
+        <PetSearchContextProvider>
+          <PetContextProvider pets={pets}>{children}</PetContextProvider>
+        </PetSearchContextProvider>
         <AppFooter />
       </Row>
     </React.Fragment>

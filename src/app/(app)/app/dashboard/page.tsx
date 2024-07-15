@@ -3,11 +3,10 @@ import Branding from "@/components/dashboard/Branding";
 import PetDetails from "@/components/dashboard/PetDetails";
 import PetList from "@/components/dashboard/PetList";
 import Stats from "@/components/dashboard/Stats";
-import SearchForm from "@/components/ui/searchForm";
+import SearchForm from "@/components/ui/SearchForm";
 import React from "react";
 
 const DashboardPage = async () => {
-
   return (
     <main>
       <section className="flex items-center justify-between py-8 text-white">
