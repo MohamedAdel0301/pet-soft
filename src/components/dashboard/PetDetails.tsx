@@ -19,7 +19,7 @@ const PetDetails = () => {
         <PetDetailSection label={"Age"} content={String(selectedPet.age)} />
       </section>
 
-      <section className="mx-8 mb-9 flex-1 rounded-md border border-black/[0.08] bg-white px-7 py-5 shadow-sm">
+      <section className="border-LightBlack mx-8 mb-9 flex-1 rounded-md border bg-white px-7 py-5 shadow-sm">
         <span>{selectedPet.notes}</span>
       </section>
     </section>
@@ -28,7 +28,7 @@ const PetDetails = () => {
 
 function TopBar({ pet }: { pet: Pet }) {
   return (
-    <div className="flex items-center border-b border-black/[0.08] bg-white px-8 py-5">
+    <div className="border-LightBlack flex items-center border-b bg-white px-8 py-5">
       <Image
         src={pet.imageUrl}
         alt="selected Pet Image"

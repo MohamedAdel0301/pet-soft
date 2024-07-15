@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 const PetList = () => {
   const { pets, handleChangeSelectedPetID, selectedPetID } = usePetContext();
   return (
-    <ul className="border-b border-black/[0.08] bg-white">
+    <ul className="border-LightBlack border-b bg-white">
       {pets.map((pet) => (
         <li key={`pet-${pet.name}-${pet.id}`}>
           <button
