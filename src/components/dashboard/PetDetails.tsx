@@ -2,6 +2,7 @@
 import { usePetContext } from "@/hooks/usePets";
 import { Pet } from "@/types/pet-types";
 import Image from "next/image";
+import PetButton from "./PetButton";
 
 const PetDetails = () => {
   const { selectedPet } = usePetContext();
@@ -19,7 +20,7 @@ const PetDetails = () => {
         <PetDetailSection label={"Age"} content={String(selectedPet.age)} />
       </section>
 
-      <section className="border-LightBlack mx-8 mb-9 flex-1 rounded-md border bg-white px-7 py-5 shadow-sm">
+      <section className="mx-8 mb-9 flex-1 rounded-md border border-LightBlack bg-white px-7 py-5 shadow-sm">
         <span>{selectedPet.notes}</span>
       </section>
     </section>
@@ -28,7 +29,7 @@ const PetDetails = () => {
 
 function TopBar({ pet }: { pet: Pet }) {
   return (
-    <div className="border-LightBlack flex items-center border-b bg-white px-8 py-5">
+    <div className="flex items-center border-b border-LightBlack bg-white px-8 py-5">
       <Image
         src={pet.imageUrl}
         alt="selected Pet Image"
@@ -37,6 +38,10 @@ function TopBar({ pet }: { pet: Pet }) {
         className="h-[75px] w-[75px] rounded-full object-cover"
       />
       <h2 className="ml-5 text-3xl font-semibold leading-7">{pet.name}</h2>
+      <div className="ml-auto space-x-2">
+        <PetButton actionType="edit" />
+        <PetButton actionType="checkout" />
+      </div>
     </div>
   );
 }
