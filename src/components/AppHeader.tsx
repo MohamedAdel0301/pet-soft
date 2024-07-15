@@ -2,7 +2,6 @@
 import React from "react";
 import Logo from "./home/Logo";
 import Link from "next/link";
-import { Row } from "./misc/Row";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
@@ -23,7 +22,6 @@ const AppHeader = () => {
   const path = usePathname();
   const activePath = path.split("/")[2];
   return (
-    <Row>
       <header className="border-offWhite/15 flex justify-between border-b py-2">
         <Logo />
         <nav>
@@ -48,7 +46,6 @@ const AppHeader = () => {
           </ul>
         </nav>
       </header>
-    </Row>
   );
 };
 
