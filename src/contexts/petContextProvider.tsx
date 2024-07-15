@@ -7,6 +7,7 @@ type PetContextType = {
   setPets: React.Dispatch<React.SetStateAction<Pet[] | []>>;
   selectedPetID: string | null;
   handleChangeSelectedPetID: (id: string) => void;
+  selectedPet?: Pet;
 };
 
 type PetsContextProvider = {
@@ -20,13 +21,21 @@ const PetContextProvider = ({ pets: data, children }: PetsContextProvider) => {
   const [pets, setPets] = useState<Pet[] | []>(data);
   const [selectedPetID, setSelectedPetID] = useState<string | null>(null);
 
+  const selectedPet = pets.find((pet) => pet.id === selectedPetID);
+
   const handleChangeSelectedPetID = (id: string) => {
     setSelectedPetID(id);
   };
 
   return (
     <PetContext.Provider
-      value={{ pets, setPets, selectedPetID, handleChangeSelectedPetID }}
+      value={{
+        pets,
+        setPets,
+        selectedPetID,
+        handleChangeSelectedPetID,
+        selectedPet,
+      }}
     >
       {children}
     </PetContext.Provider>

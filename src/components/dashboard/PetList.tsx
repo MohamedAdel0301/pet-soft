@@ -29,7 +29,7 @@ const PetList = () => {
             <div className="flex flex-col">
               <p className="text-start font-semibold">{pet.name}</p>
               <p className="text-start text-xs">
-                <span className="font-semibold">{pet.ownerName}</span>
+                <span className="font-medium">{pet.ownerName}</span>
               </p>
             </div>
           </button>
