@@ -14,7 +14,6 @@ export const SearchContext = createContext<TSearchContext | null>(null);
 
 const PetSearchContextProvider = ({ children }: TSearchProvider) => {
   const [searchQuery, setSearchQuery] = useState<string>("");
-
   const handleChangeSearchText = (text: string) => {
     setSearchQuery(() => text);
   };

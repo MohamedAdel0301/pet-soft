@@ -11,12 +11,13 @@ type TPetForm = {
 };
 
 const PetForm = ({ actionType, onFormSubmission }: TPetForm) => {
-  const { handleAddPet } = usePetContext();
+  const { handleAddPet, selectedPet, handleChangePet, selectedPetID } =
+    usePetContext();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const newPet = {
+    const pet = {
       name: formData.get("name") as string,
       ownerName: formData.get("ownerName") as string,
       imageUrl:
@@ -25,31 +26,59 @@ const PetForm = ({ actionType, onFormSubmission }: TPetForm) => {
       age: +(formData.get("age") as string),
       notes: formData.get("notes") as string,
     };
-    handleAddPet(newPet);
-    onFormSubmission()
+    if (actionType === "add") {
+      handleAddPet(pet);
+    }
+    if (actionType === "edit") {
+      handleChangePet(selectedPetID!, pet);
+    }
+    onFormSubmission();
   };
-  
+
   return (
     <form className="flex flex-col" onSubmit={handleSubmit}>
       <section className="space-y-3">
         <div className="space-y-1">
           <Label htmlFor="name">Name</Label>
-          <Input id="name" name="name" type="text" required />
+          <Input
+            id="name"
+            name="name"
+            type="text"
+            required
+            defaultValue={`${actionType === "edit" ? `${selectedPet?.name}` : ""}`}
+          />
         </div>
 
         <div className="space-y-1">
           <Label htmlFor="ownerName">Owner Name</Label>
-          <Input id="ownerName" name="ownerName" type="text" required />
+          <Input
+            id="ownerName"
+            name="ownerName"
+            type="text"
+            required
+            defaultValue={`${actionType === "edit" ? `${selectedPet?.ownerName}` : ""}`}
+          />
         </div>
 
         <div className="space-y-1">
           <Label htmlFor="imageUrl">Image URL</Label>
-          <Input id="imageUrl" name="imageUrl" type="text" />
+          <Input
+            id="imageUrl"
+            name="imageUrl"
+            type="text"
+            defaultValue={`${actionType === "edit" ? `${selectedPet?.imageUrl ?? ""}` : ""}`}
+          />
         </div>
 
         <div className="space-y-1">
           <Label htmlFor="age">Age</Label>
-          <Input id="age" name="age" type="number" required />
+          <Input
+            id="age"
+            name="age"
+            type="number"
+            required
+            defaultValue={`${actionType === "edit" ? `${selectedPet?.age}` : ""}`}
+          />
         </div>
 
         <div className="space-y-1">
@@ -60,6 +89,7 @@ const PetForm = ({ actionType, onFormSubmission }: TPetForm) => {
             className="max-h-28"
             rows={3}
             required
+            defaultValue={`${actionType === "edit" ? `${selectedPet?.notes}` : ""}`}
           />
         </div>
       </section>
