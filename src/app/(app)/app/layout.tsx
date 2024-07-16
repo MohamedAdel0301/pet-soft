@@ -1,5 +1,5 @@
-import AppFooter from "@/components/AppFooter";
-import AppHeader from "@/components/AppHeader";
+import AppFooter from "@/components/shared/AppFooter";
+import AppHeader from "@/components/shared/AppHeader";
 import BackgroundPattern from "@/components/misc/BackgroundPattern";
 import { Row } from "@/components/misc/Row";
 import PetContextProvider from "@/contexts/PetContextProvider";

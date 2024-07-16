@@ -1,4 +1,4 @@
-import ContentBlock from "@/components/ContentBlock";
+import ContentBlock from "@/components/shared/ContentBlock";
 import H1 from "@/components/misc/H1";
 
 const AccountPage = () => {
@@ -9,7 +9,7 @@ const AccountPage = () => {
       <ContentBlock className="flex h-[500px] items-center justify-center">
         <p>Logged in as...</p>
       </ContentBlock>
-    </main> 
+    </main>
   );
 };
 

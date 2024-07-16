@@ -1,4 +1,4 @@
-import ContentBlock from "@/components/ContentBlock";
+import ContentBlock from "@/components/shared/ContentBlock";
 import Branding from "@/components/dashboard/Branding";
 import PetButton from "@/components/dashboard/PetButton";
 import PetDetails from "@/components/dashboard/PetDetails";

@@ -28,6 +28,7 @@ const PetDetails = () => {
 };
 
 function TopBar({ pet }: { pet: Pet }) {
+  const { handleCheckoutPet } = usePetContext();
   return (
     <div className="flex items-center border-b border-LightBlack bg-white px-8 py-5">
       <Image
@@ -40,7 +41,10 @@ function TopBar({ pet }: { pet: Pet }) {
       <h2 className="ml-5 text-3xl font-semibold leading-7">{pet.name}</h2>
       <div className="ml-auto space-x-2">
         <PetButton actionType="edit" />
-        <PetButton actionType="checkout" />
+        <PetButton
+          actionType="checkout"
+          onClick={() => handleCheckoutPet(pet.id)}
+        />
       </div>
     </div>
   );
