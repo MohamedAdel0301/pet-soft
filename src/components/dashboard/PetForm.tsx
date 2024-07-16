@@ -7,10 +7,12 @@ import { usePetContext } from "@/hooks/usePets";
 
 type TPetForm = {
   actionType: "add" | "edit";
+  onFormSubmission: () => void;
 };
 
-const PetForm = ({ actionType }: TPetForm) => {
+const PetForm = ({ actionType, onFormSubmission }: TPetForm) => {
   const { handleAddPet } = usePetContext();
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -24,7 +26,9 @@ const PetForm = ({ actionType }: TPetForm) => {
       notes: formData.get("notes") as string,
     };
     handleAddPet(newPet);
+    onFormSubmission()
   };
+  
   return (
     <form className="flex flex-col" onSubmit={handleSubmit}>
       <section className="space-y-3">
