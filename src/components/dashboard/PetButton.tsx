@@ -19,7 +19,7 @@ const PetButton = ({ actionType, onClick }: TPetButton) => {
   if (actionType === "add") {
     return (
       <DialogTemplate header={"Add a new pet"} trigger={<AddButton />}>
-        {<PetForm />}
+        {<PetForm actionType="add" />}
       </DialogTemplate>
     );
   }
@@ -30,7 +30,7 @@ const PetButton = ({ actionType, onClick }: TPetButton) => {
         header={"Edit"}
         trigger={<Button variant={"secondary"}>Edit</Button>}
       >
-        {<PetForm />}
+        {<PetForm actionType="edit" />}
       </DialogTemplate>
     );
   }
