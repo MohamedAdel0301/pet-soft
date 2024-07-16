@@ -6,15 +6,10 @@ import PetContextProvider from "@/contexts/PetContextProvider";
 import PetSearchContextProvider from "@/contexts/PetSearchContextProvider";
 import { Pet } from "@/types/pet-types";
 import React from "react";
+import prisma from "@/lib/db";
 
 const AppLayout = async ({ children }: { children: React.ReactNode }) => {
-  const res = await fetch(
-    "https://bytegrad.com/course-assets/projects/petsoft/api/pets",
-  );
-  if (!res.ok) {
-    throw new Error("failed to fetch pets data");
-  }
-  const pets: Pet[] = await res.json();
+  const pets = await prisma.pet.findMany();
 
   return (
     <React.Fragment>
