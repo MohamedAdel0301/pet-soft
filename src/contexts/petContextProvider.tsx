@@ -4,12 +4,12 @@ import React, { createContext, useState } from "react";
 
 type PetContextType = {
   pets: Pet[] | [];
-  setPets: React.Dispatch<React.SetStateAction<Pet[] | []>>;
   selectedPetID: string | null;
-  handleChangeSelectedPetID: (id: string) => void;
   selectedPet?: Pet;
   numberOfPets: number;
+  handleChangeSelectedPetID: (id: string) => void;
   handleCheckoutPet: (id: string) => void;
+  handleAddPet: (newPet: Omit<Pet, "id">) => void;
 };
 
 type PetsContextProvider = {
@@ -34,20 +34,26 @@ const PetContextProvider = ({ pets: data, children }: PetsContextProvider) => {
     setPets((prev) => prev.filter((pet) => pet.id !== id));
     setSelectedPetID(null);
   };
-  const handleAddPet = (newPet:Pet)=>{
-    setPets(prev => [...prev,newPet])
-  }
+  const handleAddPet = (newPet: Omit<Pet, "id">) => {
+    setPets((prev) => [
+      ...prev,
+      {
+        ...newPet,
+        id: Date.now().toString(),
+      },
+    ]);
+  };
 
   return (
     <PetContext.Provider
       value={{
         pets,
-        setPets,
         selectedPetID,
-        handleChangeSelectedPetID,
         selectedPet,
         numberOfPets,
+        handleChangeSelectedPetID,
         handleCheckoutPet,
+        handleAddPet,
       }}
     >
       {children}
