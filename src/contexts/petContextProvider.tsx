@@ -1,4 +1,5 @@
 "use client";
+import { addPet } from "@/actions/crud-actions";
 import { Pet } from "@/types/pet-types";
 import React, { createContext, useState } from "react";
 
@@ -9,8 +10,6 @@ type PetContextType = {
   numberOfPets: number;
   handleChangeSelectedPetID: (id: string) => void;
   handleCheckoutPet: (id: string) => void;
-  handleAddPet: (newPet: Omit<Pet, "id">) => void;
-  handleChangePet: (petID: string, newPetData: Omit<Pet, "id">) => void;
 };
 
 type PetsContextProvider = {
@@ -20,8 +19,7 @@ type PetsContextProvider = {
 
 export const PetContext = createContext<PetContextType | null>(null);
 
-const PetContextProvider = ({ pets: data, children }: PetsContextProvider) => {
-  const [pets, setPets] = useState<Pet[] | []>(data);
+const PetContextProvider = ({ pets, children }: PetsContextProvider) => {
   const [selectedPetID, setSelectedPetID] = useState<string | null>(null);
 
   const numberOfPets = pets.length ?? 0;
@@ -32,30 +30,7 @@ const PetContextProvider = ({ pets: data, children }: PetsContextProvider) => {
   };
 
   const handleCheckoutPet = (id: string) => {
-    setPets((prev) => prev.filter((pet) => pet.id !== id));
     setSelectedPetID(null);
-  };
-  const handleAddPet = (newPet: Omit<Pet, "id">) => {
-    setPets((prev) => [
-      ...prev,
-      {
-        ...newPet,
-        id: Date.now().toString(),
-      },
-    ]);
-  };
-  const handleChangePet = (petID: string, newPetData: Omit<Pet, "id">) => {
-    setPets((prev) =>
-      prev.map((pet) => {
-        if (petID === pet.id) {
-          return {
-            id: petID,
-            ...newPetData,
-          };
-        }
-        return pet;
-      }),
-    );
   };
 
   return (
@@ -67,8 +42,6 @@ const PetContextProvider = ({ pets: data, children }: PetsContextProvider) => {
         numberOfPets,
         handleChangeSelectedPetID,
         handleCheckoutPet,
-        handleAddPet,
-        handleChangePet,
       }}
     >
       {children}

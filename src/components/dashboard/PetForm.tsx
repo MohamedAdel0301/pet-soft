@@ -4,6 +4,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { usePetContext } from "@/hooks/usePets";
+import { addPet } from "@/actions/crud-actions";
+import PetFormBtn from "./PetFormBtn";
 
 type TPetForm = {
   actionType: "add" | "edit";
@@ -11,32 +13,37 @@ type TPetForm = {
 };
 
 const PetForm = ({ actionType, onFormSubmission }: TPetForm) => {
-  const { handleAddPet, selectedPet, handleChangePet, selectedPetID } =
-    usePetContext();
+  const { selectedPetID, selectedPet } = usePetContext();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const pet = {
-      name: formData.get("name") as string,
-      ownerName: formData.get("ownerName") as string,
-      imageUrl:
-        (formData.get("imageUrl") as string) ||
-        "https://bytegrad.com/course-assets/react-nextjs/pet-placeholder.png",
-      age: +(formData.get("age") as string),
-      notes: formData.get("notes") as string,
-    };
-    if (actionType === "add") {
-      handleAddPet(pet);
-    }
-    if (actionType === "edit") {
-      handleChangePet(selectedPetID!, pet);
-    }
-    onFormSubmission();
-  };
+  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   const formData = new FormData(e.currentTarget);
+  //   const pet = {
+  //     name: formData.get("name") as string,
+  //     ownerName: formData.get("ownerName") as string,
+  //     imageUrl:
+  //       (formData.get("imageUrl") as string) ||
+  //       "https://bytegrad.com/course-assets/react-nextjs/pet-placeholder.png",
+  //     age: +(formData.get("age") as string),
+  //     notes: formData.get("notes") as string,
+  //   };
+  //   if (actionType === "add") {
+  //     handleAddPet(pet);
+  //   }
+  //   if (actionType === "edit") {
+  //     handleChangePet(selectedPetID!, pet);
+  //   }
+  //   onFormSubmission();
+  // };
 
   return (
-    <form className="flex flex-col" onSubmit={handleSubmit}>
+    <form
+      className="flex flex-col"
+      action={async (formData) => {
+        await addPet(formData);
+        onFormSubmission();
+      }}
+    >
       <section className="space-y-3">
         <div className="space-y-1">
           <Label htmlFor="name">Name</Label>
@@ -94,9 +101,7 @@ const PetForm = ({ actionType, onFormSubmission }: TPetForm) => {
         </div>
       </section>
 
-      <Button type="submit" className="mt-5 self-end">
-        {actionType === "add" ? "Submit" : "Edit"}
-      </Button>
+      <PetFormBtn actionType={actionType} />
     </form>
   );
 };
