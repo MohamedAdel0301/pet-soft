@@ -3,7 +3,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { usePetContext } from "@/hooks/usePets";
-import { addPet } from "@/actions/crud-actions";
+import { addPet, EditPet } from "@/actions/crud-actions";
 import PetFormBtn from "./PetFormBtn";
 import { toast } from "sonner";
 
@@ -40,10 +40,18 @@ const PetForm = ({ actionType, onFormSubmission }: TPetForm) => {
     <form
       className="flex flex-col"
       action={async (formData) => {
-        const error = await addPet(formData);
-        if (error) {
-          toast.warning(error.message);
-          return;
+        if (actionType === "add") {
+          const error = await addPet(formData);
+          if (error) {
+            toast.warning(error.message);
+            return;
+          }
+        } else if (actionType === "edit") {
+          const error = await EditPet(selectedPetID!, formData);
+          if (error) {
+            toast.warning(error.message);
+            return;
+          }
         }
         onFormSubmission();
       }}
