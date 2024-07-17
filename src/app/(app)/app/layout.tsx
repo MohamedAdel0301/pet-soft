@@ -4,9 +4,9 @@ import BackgroundPattern from "@/components/misc/BackgroundPattern";
 import { Row } from "@/components/misc/Row";
 import PetContextProvider from "@/contexts/PetContextProvider";
 import PetSearchContextProvider from "@/contexts/PetSearchContextProvider";
-import { Pet } from "@/types/pet-types";
 import React from "react";
 import prisma from "@/lib/db";
+import { Toaster } from "sonner";
 
 const AppLayout = async ({ children }: { children: React.ReactNode }) => {
   const pets = await prisma.pet.findMany();
@@ -22,6 +22,7 @@ const AppLayout = async ({ children }: { children: React.ReactNode }) => {
         </PetSearchContextProvider>
         <AppFooter />
       </Row>
+      <Toaster position="top-right"/>
     </React.Fragment>
   );
 };
