@@ -15,7 +15,7 @@ const DashboardPage = async () => {
         <Stats />
       </section>
 
-      <section className="grid grid-rows-[45px_350px_500px] gap-4 md:h-[600px] md:grid-cols-3 md:grid-rows-[45px_1fr]">
+      <section className="grid grid-rows-[45px_350px_500px] gap-4 md:min-h-[300px] md:grid-cols-3 md:grid-rows-[45px_1fr]">
         <div className="md:col-span-1 md:col-start-1 md:row-span-1 md:row-start-1">
           <SearchForm />
         </div>

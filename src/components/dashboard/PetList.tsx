@@ -16,7 +16,7 @@ const PetList = () => {
   });
 
   return (
-    <ul className="border-b border-LightBlack bg-white">
+    <ul className=" border-b border-LightBlack bg-white">
       {filteredPets.map((pet) => (
         <li key={`pet-${pet.name}-${pet.id}`}>
           <button
