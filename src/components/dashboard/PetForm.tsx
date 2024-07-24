@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { petFormSchema } from "@/types/pet-form";
 import { TPetForm } from "@/types/pet-form";
+import { DEFAULT_PET_IMAGE } from "@/lib/constants";
 
 type IProps = {
   actionType: "add" | "edit";
@@ -21,6 +22,7 @@ const PetForm = ({ actionType, onFormSubmission }: IProps) => {
   const {
     register,
     trigger,
+    getValues,
     formState: { errors },
   } = useForm<TPetForm>({
     resolver: zodResolver(petFormSchema),
@@ -29,21 +31,17 @@ const PetForm = ({ actionType, onFormSubmission }: IProps) => {
   return (
     <form
       className="flex flex-col"
-      action={async (formData) => {
+      action={async () => {
         const result = await trigger();
         if (!result) {
           return;
         }
         onFormSubmission();
-        const petData = {
-          name: formData.get("name") as string,
-          ownerName: formData.get("ownerName") as string,
-          imageUrl:
-            (formData.get("imageUrl") as string) ||
-            "https://bytegrad.com/course-assets/react-nextjs/pet-placeholder.png",
-          age: +(formData.get("age") as string),
-          notes: formData.get("notes") as string,
-        };
+
+        const petData = getValues();
+        petData.imageUrl = petData.imageUrl || DEFAULT_PET_IMAGE;
+        console.log(petData);
+
         if (actionType === "add") {
           await handleAddPet(petData);
         } else if (actionType === "edit") {
