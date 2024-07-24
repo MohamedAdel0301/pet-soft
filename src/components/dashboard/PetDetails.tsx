@@ -1,10 +1,8 @@
 "use client";
 import { usePetContext } from "@/hooks/usePets";
-import { Pet } from "@/types/pet-types";
+import { PetEssentials } from "@/types/pet-types";
 import Image from "next/image";
 import PetButton from "./PetButton";
-import { deletePet } from "@/actions/crud-actions";
-import { startTransition, useTransition } from "react";
 
 const PetDetails = () => {
   const { selectedPet } = usePetContext();
@@ -29,7 +27,7 @@ const PetDetails = () => {
   );
 };
 
-function TopBar({ pet: selectedPet }: { pet: Pet }) {
+function TopBar({ pet: selectedPet }: { pet: PetEssentials }) {
   const { handleDeletePet } = usePetContext();
   return (
     <div className="flex items-center border-b border-LightBlack bg-white px-8 py-5">
