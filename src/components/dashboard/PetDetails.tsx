@@ -22,7 +22,7 @@ const PetDetails = () => {
         <PetDetailSection label={"Age"} content={String(selectedPet.age)} />
       </section>
 
-      <section className="mx-8 mb-9 flex-1 rounded-md border border-LightBlack bg-white px-7 py-5 shadow-sm">
+      <section className="mx-8 mb-9 flex-1 rounded-md border border-LightBlack bg-white px-7 py-5 shadow-sm shadow-LightBlack">
         <span>{selectedPet.notes}</span>
       </section>
     </section>

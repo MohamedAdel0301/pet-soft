@@ -24,7 +24,7 @@ const config = {
       },
       colors: {
         offWhite: "#e5e8ec",
-        LightBlack: "rgb(0 0 0 / 0.08)",
+        LightBlack: "rgb(0 0 0 / 0.12)",
         green1: "#9DC08B",
         green2: "#609966",
         green4: "#40513B",
