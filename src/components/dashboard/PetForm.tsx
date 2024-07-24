@@ -16,7 +16,7 @@ type IProps = {
 };
 
 const PetForm = ({ actionType, onFormSubmission }: IProps) => {
-  const { selectedPetID, selectedPet, handleAddPet, handleEditPet } =
+  const { selectedPetID, handleAddPet, handleEditPet } =
     usePetContext();
 
   const {
