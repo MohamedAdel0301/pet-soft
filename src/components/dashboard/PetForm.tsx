@@ -16,7 +16,7 @@ type IProps = {
 };
 
 const PetForm = ({ actionType, onFormSubmission }: IProps) => {
-  const { selectedPetID, handleAddPet, handleEditPet } =
+  const { selectedPetID, selectedPet, handleAddPet, handleEditPet } =
     usePetContext();
 
   const {
@@ -26,6 +26,13 @@ const PetForm = ({ actionType, onFormSubmission }: IProps) => {
     formState: { errors },
   } = useForm<TPetForm>({
     resolver: zodResolver(petFormSchema),
+    defaultValues: {
+      name: selectedPet?.name,
+      ownerName: selectedPet?.ownerName,
+      imageUrl: selectedPet?.imageUrl,
+      age: selectedPet?.age,
+      notes: selectedPet?.notes,
+    },
   });
 
   return (

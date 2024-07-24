@@ -35,4 +35,6 @@ export const petFormSchema = z
     imageUrl: data.imageUrl || DEFAULT_PET_IMAGE,
   }));
 
+export const petIDSchema = z.string().cuid();
+
 export type TPetForm = z.infer<typeof petFormSchema>;
