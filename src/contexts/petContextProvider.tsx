@@ -23,12 +23,24 @@ type PetsContextProvider = {
 export const PetContext = createContext<PetContextType | null>(null);
 
 const PetContextProvider = ({ data, children }: PetsContextProvider) => {
-  const [optimisticPets, setOptimisticPets] = useOptimistic(data);
+  const [optimisticPets, setOptimisticPets] = useOptimistic(
+    data,
+    (state, newPetData) => {
+      return [
+        ...state,
+        {
+          ...newPetData,
+          id: Math.random.toString(),
+        },
+      ];
+    },
+  );
   const [selectedPetID, setSelectedPetID] = useState<string | null>(null);
   const numberOfPets = optimisticPets.length ?? 0;
   const selectedPet = optimisticPets.find((pet) => pet.id === selectedPetID);
 
   const handleAddPet = async (newPet: Omit<Pet, "id">) => {
+    setOptimisticPets(newPet);
     const error = await addPet(newPet);
     if (error) {
       toast.warning(error.message);
@@ -37,6 +49,7 @@ const PetContextProvider = ({ data, children }: PetsContextProvider) => {
   };
 
   const handleEditPet = async (petID: string, newPetData: Omit<Pet, "id">) => {
+    setOptimisticPets(newPetData);
     const error = await editPet(petID, newPetData);
     if (error) {
       toast.warning(error.message);

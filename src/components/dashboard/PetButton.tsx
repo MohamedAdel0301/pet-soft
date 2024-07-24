@@ -12,6 +12,7 @@ import {
 import PetForm from "./PetForm";
 import { Edit } from "lucide-react";
 import React from "react";
+import { flushSync } from "react-dom";
 
 type TPetButton = {
   actionType: "add" | "edit" | "checkout";
@@ -42,7 +43,9 @@ const PetButton = ({ actionType, onClick, disabled }: TPetButton) => {
           <PetForm
             actionType={actionType}
             onFormSubmission={() => {
-              setIsFormOpen(false);
+              flushSync(() => {
+                setIsFormOpen(false);
+              });
             }}
           />
         </DialogContent>
