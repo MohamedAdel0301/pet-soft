@@ -25,7 +25,7 @@ export const PetContext = createContext<PetContextType | null>(null);
 const PetContextProvider = ({ data, children }: PetsContextProvider) => {
   const [optimisticPets, setOptimisticPets] = useOptimistic(
     data,
-    (state, newPetData) => {
+    (state, newPetData:Omit<Pet, "id">) => {
       return [
         ...state,
         {
