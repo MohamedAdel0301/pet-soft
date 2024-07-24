@@ -16,9 +16,10 @@ import React from "react";
 type TPetButton = {
   actionType: "add" | "edit" | "checkout";
   onClick?: () => void;
+  disabled?: boolean;
 };
 
-const PetButton = ({ actionType, onClick }: TPetButton) => {
+const PetButton = ({ actionType, onClick, disabled }: TPetButton) => {
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
   const formOptions = { isFormOpen, setIsFormOpen };
 
@@ -50,7 +51,7 @@ const PetButton = ({ actionType, onClick }: TPetButton) => {
   }
   if (actionType === "checkout") {
     return (
-      <Button variant={"secondary"} onClick={onClick}>
+      <Button variant={"secondary"} onClick={onClick} disabled={disabled}>
         Checkout
       </Button>
     );

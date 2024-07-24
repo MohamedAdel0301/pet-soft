@@ -18,11 +18,11 @@ const AppLayout = async ({ children }: { children: React.ReactNode }) => {
       <Row className="flex min-h-screen flex-col">
         <AppHeader />
         <PetSearchContextProvider>
-          <PetContextProvider pets={pets}>{children}</PetContextProvider>
+          <PetContextProvider data={pets}>{children}</PetContextProvider>
         </PetSearchContextProvider>
         <AppFooter />
       </Row>
-      <Toaster position="top-right"/>
+      <Toaster position="top-right" />
     </React.Fragment>
   );
 };

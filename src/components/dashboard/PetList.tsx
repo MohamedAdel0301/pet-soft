@@ -5,10 +5,11 @@ import { cn } from "@/lib/utils";
 import { useSearchPets } from "@/hooks/useSearchPets";
 
 const PetList = () => {
-  const { pets, handleChangeSelectedPetID, selectedPetID } = usePetContext();
+  const { optimisticPets, handleChangeSelectedPetID, selectedPetID } =
+    usePetContext();
   const { searchQuery } = useSearchPets();
 
-  const filteredPets = pets.filter((pet) => {
+  const filteredPets = optimisticPets.filter((pet) => {
     if (searchQuery) {
       return pet.name.toLowerCase().includes(searchQuery.toLowerCase());
     }
@@ -16,7 +17,7 @@ const PetList = () => {
   });
 
   return (
-    <ul className=" border-b border-LightBlack bg-white">
+    <ul className="min-h-[400px] border-b border-LightBlack bg-white">
       {filteredPets.map((pet) => (
         <li key={`pet-${pet.name}-${pet.id}`}>
           <button

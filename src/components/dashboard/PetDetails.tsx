@@ -3,11 +3,13 @@ import { usePetContext } from "@/hooks/usePets";
 import { Pet } from "@/types/pet-types";
 import Image from "next/image";
 import PetButton from "./PetButton";
+import { deletePet } from "@/actions/crud-actions";
+import { startTransition, useTransition } from "react";
 
 const PetDetails = () => {
   const { selectedPet } = usePetContext();
-  if (!selectedPet) return null;
 
+  if (!selectedPet) return null;
   return (
     <section className="flex h-full w-full flex-col">
       <TopBar pet={selectedPet} />
@@ -27,23 +29,25 @@ const PetDetails = () => {
   );
 };
 
-function TopBar({ pet }: { pet: Pet }) {
-  const { handleCheckoutPet } = usePetContext();
+function TopBar({ pet: selectedPet }: { pet: Pet }) {
+  const { handleDeletePet } = usePetContext();
   return (
     <div className="flex items-center border-b border-LightBlack bg-white px-8 py-5">
       <Image
-        src={pet.imageUrl}
+        src={selectedPet.imageUrl}
         alt="selected Pet Image"
         width={75}
         height={75}
         className="h-[75px] w-[75px] rounded-full object-cover"
       />
-      <h2 className="ml-5 text-3xl font-semibold leading-7">{pet.name}</h2>
+      <h2 className="ml-5 text-3xl font-semibold leading-7">
+        {selectedPet.name}
+      </h2>
       <div className="ml-auto space-x-2">
         <PetButton actionType="edit" />
         <PetButton
           actionType="checkout"
-          onClick={() => handleCheckoutPet(pet.id)}
+          onClick={async () => await handleDeletePet(selectedPet.id)}
         />
       </div>
     </div>
