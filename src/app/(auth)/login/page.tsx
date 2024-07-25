@@ -8,7 +8,7 @@ const LoginPage = () => {
   return (
     <main>
       <H1 className="text-center">Log in</H1>
-      <AuthForm />
+      <AuthForm actionType="login" />
 
       <p className="text-center text-sm">
         No account yet?{" "}

@@ -4,7 +4,11 @@ import { Label } from "../ui/label";
 
 const AuthFormInputStyles = "border-zinc-400";
 
-const AuthForm = () => {
+type TAuthForm = {
+  actionType: "signup" | "login";
+};
+
+const AuthForm = ({ actionType }: TAuthForm) => {
   return (
     <form className="space-y-2">
       <div className="space-y-1">
@@ -17,7 +21,9 @@ const AuthForm = () => {
       </div>
 
       <div className="w-full">
-        <Button className="mx-auto mb-2 mt-4 block py-0 text-lg">Log in</Button>
+        <Button className="mx-auto mb-2 mt-4 block py-0 text-lg">
+          {actionType === "login" ? "Log in" : "Sign up"}
+        </Button>
       </div>
     </form>
   );

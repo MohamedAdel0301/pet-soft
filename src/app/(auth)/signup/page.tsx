@@ -7,7 +7,7 @@ const SignUpPage = () => {
   return (
     <main>
       <H1 className="text-center">Log in</H1>
-      <AuthForm />
+      <AuthForm actionType="signup" />
 
       <p className="text-center text-sm">
         Already have an account?{" "}
