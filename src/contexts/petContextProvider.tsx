@@ -18,8 +18,6 @@ type PetContextType = {
   ) => Promise<void>;
 };
 
-type ActionType = "add" | "edit" | "delete";
-
 type PetsContextProvider = {
   data: PetEssentials[];
   children: React.ReactNode;

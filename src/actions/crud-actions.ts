@@ -2,15 +2,13 @@
 
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/db";
+import { checkAuth } from "@/lib/server-utils";
 import { petFormSchema, petIDSchema } from "@/types/pet-form";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function addPet(petData: unknown) {
-  const session = await auth();
-  if (!session?.user) {
-    redirect("/login");
-  }
+  const session = await checkAuth();
 
   const validatedPet = petFormSchema.safeParse(petData);
   if (!validatedPet.success) {
@@ -37,12 +35,40 @@ export async function addPet(petData: unknown) {
 }
 
 export async function editPet(petID: unknown, petData: unknown) {
+  //authentication
+  const session = await checkAuth();
+  //validate incoming data
   const validatedID = petIDSchema.safeParse(petID);
   const validatedPet = petFormSchema.safeParse(petData);
-
   if (!validatedPet.success || !validatedID.success) {
     return {
       message: "Invalid pet data",
+    };
+  }
+  //authorization check
+  let pet;
+  try {
+    pet = await prisma.pet.findUnique({
+      where: {
+        id: validatedID.data,
+      },
+      select: {
+        userId: true,
+      },
+    });
+  } catch (e) {
+    if (e instanceof Error) return { message: e.message };
+  }
+
+  if (!pet) {
+    return {
+      message: "Couldn't find pet",
+    };
+  }
+
+  if (pet.userId !== session.user.id) {
+    return {
+      message: "Action not authorized",
     };
   }
 
@@ -60,9 +86,40 @@ export async function editPet(petID: unknown, petData: unknown) {
 }
 
 export async function deletePet(petID: unknown) {
+  //authentication
+  const session = await checkAuth();
+
+  //validation part
   const validatedID = petIDSchema.safeParse(petID);
   if (!validatedID.success) {
     return { message: "invalid pet id" };
+  }
+
+  //authorization check for pet owner
+  let pet;
+  try {
+    pet = await prisma.pet.findUnique({
+      where: {
+        id: validatedID.data,
+      },
+      select: {
+        userId: true,
+      },
+    });
+  } catch (e) {
+    if (e instanceof Error) return { message: e.message };
+  }
+
+  if (!pet) {
+    return {
+      message: "Couldn't find pet",
+    };
+  }
+
+  if (pet.userId !== session.user.id) {
+    return {
+      message: "Action not authorized",
+    };
   }
 
   try {

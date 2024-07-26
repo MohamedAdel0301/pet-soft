@@ -1,16 +1,10 @@
 import ContentBlock from "@/components/shared/ContentBlock";
 import H1 from "@/components/misc/H1";
-import { auth } from "@/lib/auth";
-import { redirect } from "next/navigation";
-import { Button } from "@/components/ui/button";
 import SignoutBtn from "@/components/auth/SignoutBtn";
+import { checkAuth } from "@/lib/server-utils";
 
 const AccountPage = async () => {
-  const session = await auth();
-  //check if middleware doesn't run
-  if (!session?.user) {
-    redirect("/login");
-  }
+  const session = await checkAuth();
   return (
     <main>
       <H1 className="my-8 text-offWhite">Account</H1>

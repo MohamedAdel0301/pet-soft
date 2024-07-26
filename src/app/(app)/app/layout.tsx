@@ -9,14 +9,10 @@ import prisma from "@/lib/db";
 import { Toaster } from "sonner";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { checkAuth } from "@/lib/server-utils";
 
 const AppLayout = async ({ children }: { children: React.ReactNode }) => {
-  const session = await auth();
-
-  if (!session) {
-    redirect("/login");
-  }
-
+  const session = await checkAuth();
   const pets = await prisma.pet.findMany({
     where: {
       userId: session.user?.id,
