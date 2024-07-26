@@ -6,7 +6,7 @@ import React from "react";
 const SignUpPage = () => {
   return (
     <main>
-      <H1 className="text-center">Log in</H1>
+      <H1 className="text-center">Sign up</H1>
       <AuthForm actionType="signup" />
 
       <p className="text-center text-sm">

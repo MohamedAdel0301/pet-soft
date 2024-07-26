@@ -1,4 +1,4 @@
-import { logIn } from "@/actions/auth-actions";
+import { logIn, signUp } from "@/actions/auth-actions";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -11,7 +11,10 @@ type TAuthForm = {
 
 const AuthForm = ({ actionType }: TAuthForm) => {
   return (
-    <form className="space-y-2" action={logIn}>
+    <form
+      className="space-y-2"
+      action={actionType === "login" ? logIn : signUp}
+    >
       <div className="space-y-1">
         <Label htmlFor="email">Email</Label>
         <Input
