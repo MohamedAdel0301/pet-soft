@@ -2,14 +2,13 @@
 
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/db";
-import { checkAuth } from "@/lib/server-utils";
+import { checkAuth, getPetByID } from "@/lib/server-utils";
 import { petFormSchema, petIDSchema } from "@/types/pet-form";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 
 export async function addPet(petData: unknown) {
   const session = await checkAuth();
-
+  console.log(session);
   const validatedPet = petFormSchema.safeParse(petData);
   if (!validatedPet.success) {
     return {
@@ -48,14 +47,7 @@ export async function editPet(petID: unknown, petData: unknown) {
   //authorization check
   let pet;
   try {
-    pet = await prisma.pet.findUnique({
-      where: {
-        id: validatedID.data,
-      },
-      select: {
-        userId: true,
-      },
-    });
+    pet = await getPetByID(validatedID.data);
   } catch (e) {
     if (e instanceof Error) return { message: e.message };
   }
@@ -98,14 +90,7 @@ export async function deletePet(petID: unknown) {
   //authorization check for pet owner
   let pet;
   try {
-    pet = await prisma.pet.findUnique({
-      where: {
-        id: validatedID.data,
-      },
-      select: {
-        userId: true,
-      },
-    });
+    pet = await getPetByID(validatedID.data);
   } catch (e) {
     if (e instanceof Error) return { message: e.message };
   }

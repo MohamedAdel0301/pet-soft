@@ -9,15 +9,13 @@ import prisma from "@/lib/db";
 import { Toaster } from "sonner";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import { checkAuth } from "@/lib/server-utils";
+import { checkAuth, getPetsByUserID } from "@/lib/server-utils";
 
 const AppLayout = async ({ children }: { children: React.ReactNode }) => {
+  
   const session = await checkAuth();
-  const pets = await prisma.pet.findMany({
-    where: {
-      userId: session.user?.id,
-    },
-  });
+  const pets = await getPetsByUserID(session.user?.id);
+
   return (
     <React.Fragment>
       <BackgroundPattern />
