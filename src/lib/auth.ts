@@ -14,7 +14,7 @@ const config = {
 
         const user = await prisma.user.findUnique({
           where: {
-            email: email,
+            email: email as string,
           },
         });
         if (!user) {
@@ -22,7 +22,7 @@ const config = {
           return null;
         }
         const passwordsMatch = await bcrypt.compare(
-          password,
+          password as string,
           user.hashedPassword,
         );
         if (!passwordsMatch) {
