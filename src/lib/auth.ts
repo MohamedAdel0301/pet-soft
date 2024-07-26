@@ -41,11 +41,14 @@ const config = {
         return false;
       } else if (isLoggedIn && isAccessApp) {
         return true;
-      } else if (!isAccessApp) {
+      } else if (isLoggedIn && !isAccessApp) {
+        return Response.redirect(new URL("/app/dashboard", request.nextUrl));
+      } else if (!isAccessApp && !isLoggedIn) {
         return true;
       }
+      return false;
     },
   },
 } satisfies NextAuthConfig;
 
-export const { auth, signIn } = NextAuth(config);
+export const { auth, signIn, signOut } = NextAuth(config);
