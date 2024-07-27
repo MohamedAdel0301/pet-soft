@@ -41,7 +41,13 @@ const config = {
       } else if (isLoggedIn && isAccessApp) {
         return true;
       } else if (isLoggedIn && !isAccessApp) {
-        return Response.redirect(new URL("/app/dashboard", request.nextUrl));
+        if (
+          request.nextUrl.pathname.includes("/login") ||
+          request.nextUrl.pathname.includes("/signup")
+        ) {
+          return Response.redirect(new URL("/payment", request.nextUrl));
+        }
+        return true;
       } else if (!isAccessApp && !isLoggedIn) {
         return true;
       }
