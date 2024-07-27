@@ -4,9 +4,9 @@ import { signIn, signOut } from "@/lib/auth";
 import prisma from "@/lib/db";
 import { AuthFormSchema } from "@/types/auth-form";
 import { Prisma } from "@prisma/client";
+import { AuthError } from "next-auth";
 
-export const logIn = async (formData: unknown) => {
-  
+export const logIn = async (prevState: unknown, formData: unknown) => {
   //check if of type FormData
   if (!(formData instanceof FormData)) {
     return { message: "Unknown error" };
@@ -19,14 +19,33 @@ export const logIn = async (formData: unknown) => {
     return { message: "Invalid form data" };
   }
   //attempt sign in
-  await signIn("credentials", validatedFormData.data);
+  try {
+    await signIn("credentials", validatedFormData.data);
+  } catch (e) {
+    if (e instanceof AuthError) {
+      switch (e.type) {
+        case "CredentialsSignin": {
+          return {
+            message: "Invalid credentials",
+          };
+        }
+        default: {
+          return {
+            message: "Couldn't sign in",
+          };
+        }
+      }
+    }
+    //nextjs redirect works by throwing an error which gets caught here, need to throw the same error again
+    throw e;
+  }
 };
 
 export const logOut = async () => {
   await signOut({ redirectTo: "/" });
 };
 
-export const signUp = async (formData: unknown) => {
+export const signUp = async (prevState: unknown, formData: unknown) => {
   if (!(formData instanceof FormData)) {
     return { message: "Unknown error" };
   }

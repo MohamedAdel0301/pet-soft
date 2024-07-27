@@ -1,8 +1,9 @@
+"use client";
 import { logIn, signUp } from "@/actions/auth-actions";
-import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import AuthFormBtn from "./AuthFormBtn";
+import { useFormState } from "react-dom";
 
 const AuthFormInputStyles = "border-zinc-400";
 
@@ -11,10 +12,12 @@ type TAuthForm = {
 };
 
 const AuthForm = ({ actionType }: TAuthForm) => {
+  const [signUpError, dispatchSignUp] = useFormState(signUp, undefined);
+  const [loginError, dispatchLogin] = useFormState(logIn, undefined);
   return (
     <form
       className="space-y-2"
-      action={actionType === "login" ? logIn : signUp}
+      action={actionType === "login" ? dispatchLogin : dispatchSignUp}
     >
       <div className="space-y-1">
         <Label htmlFor="email">Email</Label>
@@ -42,6 +45,8 @@ const AuthForm = ({ actionType }: TAuthForm) => {
       <div className="w-full">
         <AuthFormBtn actionType={actionType} />
       </div>
+      {signUpError && <p className="text-red-500">{signUpError.message}</p>}
+      {loginError && <p className="text-red-500">{loginError.message}</p>}
     </form>
   );
 };
