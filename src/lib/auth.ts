@@ -38,12 +38,15 @@ const config = {
       const isAccessApp = request.nextUrl.pathname.includes("/app");
       if (!isLoggedIn && isAccessApp) {
         return false;
-      } else if (isLoggedIn && isAccessApp) {
+      } else if (isLoggedIn && isAccessApp && !auth?.user.hasAccess) {
+        return Response.redirect(new URL("/payment", request.nextUrl));
+      } else if (isLoggedIn && isAccessApp && auth?.user.hasAccess) {
         return true;
       } else if (isLoggedIn && !isAccessApp) {
         if (
-          request.nextUrl.pathname.includes("/login") ||
-          request.nextUrl.pathname.includes("/signup")
+          (request.nextUrl.pathname.includes("/login") ||
+            request.nextUrl.pathname.includes("/signup")) &&
+          !auth?.user.hasAccess
         ) {
           return Response.redirect(new URL("/payment", request.nextUrl));
         }
@@ -57,12 +60,14 @@ const config = {
       if (user) {
         //on sign in
         token.userId = user.id;
+        token.hasAccess = user.hasAccess;
       }
       return token;
     },
     session: ({ session, token }) => {
       if (session.user) {
         session.user.id = token.userId;
+        session.user.hasAccess = token.hasAccess;
       }
       return session;
     },
