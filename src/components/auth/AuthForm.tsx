@@ -2,6 +2,7 @@ import { logIn, signUp } from "@/actions/auth-actions";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import AuthFormBtn from "./AuthFormBtn";
 
 const AuthFormInputStyles = "border-zinc-400";
 
@@ -22,6 +23,8 @@ const AuthForm = ({ actionType }: TAuthForm) => {
           name="email"
           type="email"
           className={AuthFormInputStyles}
+          required
+          maxLength={100}
         />
       </div>
       <div className="space-y-1">
@@ -31,13 +34,13 @@ const AuthForm = ({ actionType }: TAuthForm) => {
           type="password"
           name="password"
           className={AuthFormInputStyles}
+          required
+          maxLength={100}
         />
       </div>
 
       <div className="w-full">
-        <Button className="mx-auto mb-2 mt-4 block py-0 text-lg">
-          {actionType === "login" ? "Log in" : "Sign up"}
-        </Button>
+        <AuthFormBtn actionType={actionType} />
       </div>
     </form>
   );
