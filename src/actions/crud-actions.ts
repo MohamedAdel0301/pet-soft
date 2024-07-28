@@ -1,6 +1,6 @@
 "use server";
 
-import { auth } from "@/lib/auth";
+import { auth } from "@/lib/auth-no-edge";
 import prisma from "@/lib/db";
 import { checkAuth, getPetByID } from "@/lib/server-utils";
 import { petFormSchema, petIDSchema } from "@/types/pet-form";

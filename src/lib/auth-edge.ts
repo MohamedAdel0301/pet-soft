@@ -1,43 +1,16 @@
-import bcrypt from "bcryptjs";
-import NextAuth, { NextAuthConfig } from "next-auth";
-import Credentials from "next-auth/providers/credentials";
-import { getUserByEmail } from "./server-utils";
+import { NextAuthConfig } from "next-auth";
 import prisma from "./db";
-import { NextResponse } from "next/server";
 
-const config = {
+export const nextAuthEdgeConfig = {
   pages: {
     signIn: "/login",
   },
-  providers: [
-    Credentials({
-      async authorize(credentials) {
-        const { email, password } = credentials;
-
-        const user = await getUserByEmail(email as string);
-
-        if (!user) {
-          console.log("no user found");
-          return null;
-        }
-
-        const passwordsMatch = await bcrypt.compare(
-          password as string,
-          user.hashedPassword,
-        );
-
-        if (!passwordsMatch) {
-          console.log("Invalid credentials");
-          return null;
-        }
-        return user;
-      },
-    }),
-  ],
   callbacks: {
     authorized: ({ auth, request }) => {
+      // runs on every request with middleware
       const isLoggedIn = Boolean(auth?.user);
       const isTryingToAccessApp = request.nextUrl.pathname.includes("/app");
+
       if (!isLoggedIn && isTryingToAccessApp) {
         return false;
       }
@@ -56,10 +29,7 @@ const config = {
           request.nextUrl.pathname.includes("/signup")) &&
         auth?.user.hasAccess
       ) {
-        return NextResponse.redirect(
-          new URL("/app/dashboard", request.nextUrl),
-          302,
-        );
+        return Response.redirect(new URL("/app/dashboard", request.nextUrl));
       }
 
       if (isLoggedIn && !isTryingToAccessApp && !auth?.user.hasAccess) {
@@ -67,15 +37,12 @@ const config = {
           request.nextUrl.pathname.includes("/login") ||
           request.nextUrl.pathname.includes("/signup")
         ) {
-          return NextResponse.redirect(
-            new URL("/payment", request.nextUrl),
-            302,
-          );
+          return Response.redirect(new URL("/payment", request.nextUrl));
         }
 
         return true;
       }
-      //generalist rule
+
       if (!isLoggedIn && !isTryingToAccessApp) {
         return true;
       }
@@ -105,18 +72,11 @@ const config = {
       return token;
     },
     session: ({ session, token }) => {
-      if (session.user) {
-        session.user.id = token.userId;
-        session.user.hasAccess = token.hasAccess;
-      }
+      session.user.id = token.userId;
+      session.user.hasAccess = token.hasAccess;
+
       return session;
     },
   },
+  providers: [],
 } satisfies NextAuthConfig;
-
-export const {
-  auth,
-  signIn,
-  signOut,
-  handlers: { GET, POST },
-} = NextAuth(config);

@@ -1,6 +1,6 @@
 "use server";
 import bcrypt from "bcryptjs";
-import { signIn, signOut } from "@/lib/auth";
+import { signIn, signOut } from "@/lib/auth-no-edge";
 import prisma from "@/lib/db";
 import { AuthFormSchema } from "@/types/auth-form";
 import { Prisma } from "@prisma/client";
