@@ -3,6 +3,7 @@ import NextAuth, { NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { getUserByEmail } from "./server-utils";
 import prisma from "./db";
+import { NextResponse } from "next/server";
 
 const config = {
   pages: {
@@ -55,7 +56,10 @@ const config = {
           request.nextUrl.pathname.includes("/signup")) &&
         auth?.user.hasAccess
       ) {
-        return Response.redirect(new URL("/app/dashboard", request.nextUrl));
+        return NextResponse.redirect(
+          new URL("/app/dashboard", request.nextUrl),
+          302,
+        );
       }
 
       if (isLoggedIn && !isTryingToAccessApp && !auth?.user.hasAccess) {
@@ -63,12 +67,15 @@ const config = {
           request.nextUrl.pathname.includes("/login") ||
           request.nextUrl.pathname.includes("/signup")
         ) {
-          return Response.redirect(new URL("/payment", request.nextUrl));
+          return NextResponse.redirect(
+            new URL("/payment", request.nextUrl),
+            302,
+          );
         }
 
         return true;
       }
-
+      //generalist rule
       if (!isLoggedIn && !isTryingToAccessApp) {
         return true;
       }

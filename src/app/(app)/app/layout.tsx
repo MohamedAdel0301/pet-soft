@@ -5,10 +5,7 @@ import { Row } from "@/components/misc/Row";
 import PetContextProvider from "@/contexts/PetContextProvider";
 import PetSearchContextProvider from "@/contexts/PetSearchContextProvider";
 import React from "react";
-import prisma from "@/lib/db";
 import { Toaster } from "sonner";
-import { auth } from "@/lib/auth";
-import { redirect } from "next/navigation";
 import { checkAuth, getPetsByUserID } from "@/lib/server-utils";
 
 const AppLayout = async ({ children }: { children: React.ReactNode }) => {
