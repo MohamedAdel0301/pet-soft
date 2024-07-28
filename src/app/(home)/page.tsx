@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="bg-linearMint flex min-h-screen flex-col items-center justify-center gap-10 lg:flex-row">
+    <main className="flex min-h-screen flex-col items-center justify-center gap-10 bg-linearMint lg:flex-row">
       <Image
         src="https://bytegrad.com/course-assets/react-nextjs/petsoft-preview.png"
         alt="PetSoft's preview"
@@ -28,7 +28,7 @@ export default function Home() {
           <Button asChild>
             <Link href={"/signup"}>Get started</Link>
           </Button>
-          <Button variant={"secondary"} asChild>
+          <Button variant={"secondary"} className="hover:bg-white/70" asChild>
             <Link href={"/login"}>Log in</Link>
           </Button>
         </div>
