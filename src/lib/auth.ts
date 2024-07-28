@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import NextAuth, { NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { getUserByEmail } from "./server-utils";
+import prisma from "./db";
 
 const config = {
   pages: {
@@ -35,33 +36,65 @@ const config = {
   callbacks: {
     authorized: ({ auth, request }) => {
       const isLoggedIn = Boolean(auth?.user);
-      const isAccessApp = request.nextUrl.pathname.includes("/app");
-      if (!isLoggedIn && isAccessApp) {
+      const isTryingToAccessApp = request.nextUrl.pathname.includes("/app");
+      if (!isLoggedIn && isTryingToAccessApp) {
         return false;
-      } else if (isLoggedIn && isAccessApp && !auth?.user.hasAccess) {
+      }
+
+      if (isLoggedIn && isTryingToAccessApp && !auth?.user.hasAccess) {
         return Response.redirect(new URL("/payment", request.nextUrl));
-      } else if (isLoggedIn && isAccessApp && auth?.user.hasAccess) {
+      }
+
+      if (isLoggedIn && isTryingToAccessApp && auth?.user.hasAccess) {
         return true;
-      } else if (isLoggedIn && !isAccessApp) {
+      }
+
+      if (
+        isLoggedIn &&
+        (request.nextUrl.pathname.includes("/login") ||
+          request.nextUrl.pathname.includes("/signup")) &&
+        auth?.user.hasAccess
+      ) {
+        return Response.redirect(new URL("/app/dashboard", request.nextUrl));
+      }
+
+      if (isLoggedIn && !isTryingToAccessApp && !auth?.user.hasAccess) {
         if (
-          (request.nextUrl.pathname.includes("/login") ||
-            request.nextUrl.pathname.includes("/signup")) &&
-          !auth?.user.hasAccess
+          request.nextUrl.pathname.includes("/login") ||
+          request.nextUrl.pathname.includes("/signup")
         ) {
           return Response.redirect(new URL("/payment", request.nextUrl));
         }
-        return true;
-      } else if (!isAccessApp && !isLoggedIn) {
+
         return true;
       }
+
+      if (!isLoggedIn && !isTryingToAccessApp) {
+        return true;
+      }
+
       return false;
     },
-    jwt: ({ token, user }) => {
+    jwt: async ({ token, user, trigger }) => {
       if (user) {
-        //on sign in
+        // on sign in
         token.userId = user.id;
+        token.email = user.email!;
         token.hasAccess = user.hasAccess;
       }
+
+      if (trigger === "update") {
+        // on every request
+        const userFromDb = await prisma.user.findUnique({
+          where: {
+            email: token.email,
+          },
+        });
+        if (userFromDb) {
+          token.hasAccess = userFromDb.hasAccess;
+        }
+      }
+
       return token;
     },
     session: ({ session, token }) => {
