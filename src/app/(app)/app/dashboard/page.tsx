@@ -4,7 +4,7 @@ import PetButton from "@/components/dashboard/PetButton";
 import PetDetails from "@/components/dashboard/PetDetails";
 import PetList from "@/components/dashboard/PetList";
 import Stats from "@/components/dashboard/Stats";
-import SearchForm from "@/components/ui/SearchForm";
+import SearchForm from "../../../../components/ui/SearchForm";
 import React from "react";
 
 const DashboardPage = async () => {
